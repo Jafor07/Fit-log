@@ -1,9 +1,11 @@
-import Image from "next/image";
+import Hero from "@/components/Hero"
+import LibrarySection from "@/components/LibrarySection"
 
 export default function Home() {
-    return (
-    
-      <h1>Fitlog</h1>
-    
-  );
+	return (
+		<>
+			<Hero />
+			<LibrarySection />
+		</>
+	)
 }
