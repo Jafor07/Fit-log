@@ -24,5 +24,5 @@ FitLog is a dark, no-nonsense workout tracker. Browse a library of twelve lifts,
 
 ## Live Link
 
-https://fit-log-nine-alpha.vercel.app/
+https://fit-log-bc28.vercel.app/
 
