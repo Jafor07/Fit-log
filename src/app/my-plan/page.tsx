@@ -151,7 +151,7 @@ const MyPlanPage = () => {
 									View Details
 								</Link>
 
-								{activeTab === "plan" && !(item as PlanWorkout).isDone && (
+								{activeTab === "plan" && (
 									<button
 										onClick={() => markAsDone(item.id)}
 										className="flex items-center gap-1 bg-accent text-black text-sm font-semibold px-4 py-2 rounded-lg hover:opacity-90 transition-opacity"

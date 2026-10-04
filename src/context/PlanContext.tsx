@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useContext, useState } from "react"
+import { createContext, useContext, useEffect, useState } from "react"
 import toast from "react-hot-toast"
 import { Workout, PlanWorkout } from "@/types"
 
@@ -24,6 +24,29 @@ const PlanContext = createContext<PlanContextType | null>(null)
 export function PlanProvider({ children }: { children: React.ReactNode }) {
 	const [plan, setPlan] = useState<PlanWorkout[]>([])
 	const [saved, setSaved] = useState<Workout[]>([])
+	const [isHydrated, setIsHydrated] = useState(false)
+
+	// read from localStorage once, right after mount (this only runs in
+	// the browser, never on the server, so it's safe here)
+	useEffect(() => {
+		const storedPlan = localStorage.getItem("fitlog-plan")
+		const storedSaved = localStorage.getItem("fitlog-saved")
+		if (storedPlan) setPlan(JSON.parse(storedPlan))
+		if (storedSaved) setSaved(JSON.parse(storedSaved))
+		setIsHydrated(true)
+	}, [])
+
+	useEffect(() => {
+		if (isHydrated) {
+			localStorage.setItem("fitlog-plan", JSON.stringify(plan))
+		}
+	}, [plan, isHydrated])
+
+	useEffect(() => {
+		if (isHydrated) {
+			localStorage.setItem("fitlog-saved", JSON.stringify(saved))
+		}
+	}, [saved, isHydrated])
 
 	const addToPlan = (workout: Workout) => {
 		if (plan.length >= 5) {
@@ -57,10 +80,9 @@ export function PlanProvider({ children }: { children: React.ReactNode }) {
 		toast.success("Removed from saved")
 	}
 
+
 	const markAsDone = (id: number) => {
-		setPlan((prev) =>
-			prev.map((item) => (item.id === id ? { ...item, isDone: true } : item))
-		)
+		setPlan((prev) => prev.filter((item) => item.id !== id))
 		toast.success("Workout done! Great job!")
 	}
 
